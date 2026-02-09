@@ -19,22 +19,16 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     h1 {
-      font-size: 2.2em;
-      margin-bottom: 10px;
       letter-spacing: 2px;
     }
 
-    p {
-      font-size: 1.1em;
-      color: #ddd;
-    }
-
     button {
-      margin-top: 30px;
-      padding: 14px 32px;
+      margin-top: 25px;
+      padding: 14px 30px;
       font-size: 1.1em;
       background: linear-gradient(180deg, #1e2328, #0a1428);
       border: 2px solid #c8aa6e;
@@ -52,7 +46,7 @@
     #puzzle {
       display: grid;
       grid-template-columns: repeat(3, 100px);
-      grid-gap: 6px;
+      gap: 6px;
       margin-top: 20px;
     }
 
@@ -61,12 +55,7 @@
       height: 100px;
       background-image: url("20251213_203723.jpg");
       background-size: 300px 300px;
-      cursor: pointer;
       border: 1px solid #c8aa6e;
-    }
-
-    .final {
-      display: none;
     }
 
     img {
@@ -97,24 +86,24 @@
 
   <!-- TELA 1 -->
   <div class="tela" id="tela1">
-    <h1>CONTINUAR PARTIDA</h1>
-    <p>Jogadores:</p>
-    <p><strong>renatanunes27</strong> ❤️ <strong>anickpio</strong></p>
-    <button onclick="iniciar()">Iniciar</button>
+    <h1>CONTINUAR PARTIDA?</h1>
+    <p><strong>renatanunes27</strong> 💙 <strong>anickpio</strong></p>
+    <p>Início: 25/06</p>
+    <button onclick="iniciar()">Continuar</button>
   </div>
 
   <!-- TELA 2 -->
   <div class="tela" id="tela2" style="display:none;">
-    <h1>Monte o quebra-cabeça</h1>
-    <p>Uma partida que começou em 25/06</p>
+    <h1>Missão bônus</h1>
+    <p>Clique em todas as peças</p>
     <div id="puzzle"></div>
     <button onclick="finalizar()">Confirmar</button>
   </div>
 
   <!-- TELA FINAL -->
-  <div class="tela final" id="tela3">
+  <div class="tela" id="tela3" style="display:none;">
     <h1>✨ Vitória ✨</h1>
-    <p>Você é o amor dessa e de todas as minhas outras vidas.</p>
+    <p>Você é o amor dessa<br>e de todas as minhas outras vidas.</p>
 
     <img src="20251213_203723.jpg">
 
@@ -132,19 +121,20 @@
 
       puzzle.innerHTML = "";
 
-      let positions = [...Array(9).keys()];
-      positions.sort(() => Math.random() - 0.5);
-
-      positions.forEach(pos => {
+      for (let i = 0; i < 9; i++) {
         const piece = document.createElement("div");
         piece.className = "piece";
 
-        const x = (pos % 3) * -100;
-        const y = Math.floor(pos / 3) * -100;
-
+        const x = (i % 3) * -100;
+        const y = Math.floor(i / 3) * -100;
         piece.style.backgroundPosition = `${x}px ${y}px`;
+
+        piece.onclick = () => {
+          piece.style.opacity = "1";
+        };
+
         puzzle.appendChild(piece);
-      });
+      }
     }
 
     function finalizar() {
