@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Continuar Partida</title>
+  <style>
+    body {
+      background-color: #0a1428;
+      color: #f0e6d2;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background-color: #091428;
+      border: 2px solid #c89b3c;
+      border-radius: 12px;
+      padding: 30px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 0 20px #000;
+    }
+    h1 {
+      color: #c89b3c;
+      margin-bottom: 10px;
+    }
+    button {
+      background-color: #c89b3c;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #e6c97a;
+    }
+    .hidden {
+      display: none;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Continuar partida?</h1>
+    <p><strong>renatanunes27</strong> + <strong>anickpio</strong></p>
+    <p>Início: 25/06</p>
+
+    <button onclick="continuar()">Continuar</button>
+
+    <div id="mensagem" class="hidden">
+      💖 Você é o amor dessa e de todas as minhas outras vidas 💖
+    </div>
+  </div>
+
+  <script>
+    function continuar() {
+      document.getElementById("mensagem").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
