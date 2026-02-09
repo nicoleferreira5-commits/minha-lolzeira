@@ -1,147 +1,146 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Continuar Partida</title>
+<meta charset="UTF-8">
+<title>Continuar Partida</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #0a1a2f, #000814);
-      color: #c8aa6e;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #0a1a2f, #000814);
+  color: #c8aa6e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .tela {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+.tela {
+  text-align: center;
+}
 
-    h1 {
-      letter-spacing: 2px;
-    }
+h1 {
+  letter-spacing: 2px;
+}
 
-    button {
-      margin-top: 25px;
-      padding: 14px 30px;
-      font-size: 1.1em;
-      background: linear-gradient(180deg, #1e2328, #0a1428);
-      border: 2px solid #c8aa6e;
-      color: #c8aa6e;
-      cursor: pointer;
-      border-radius: 6px;
-    }
+button {
+  margin-top: 20px;
+  padding: 12px 28px;
+  font-size: 1em;
+  background: linear-gradient(180deg, #1e2328, #0a1428);
+  border: 2px solid #c8aa6e;
+  color: #c8aa6e;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    button:hover {
-      background: #c8aa6e;
-      color: #0a1428;
-    }
+#puzzle {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 4px;
+  margin-top: 20px;
+}
 
-    /* QUEBRA-CABEÇA */
-    #puzzle {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      gap: 6px;
-      margin-top: 20px;
-    }
+.piece {
+  width: 100px;
+  height: 100px;
+  background-image: url("20251213_203723.jpg");
+  background-size: 300px 300px;
+  border: 1px solid #c8aa6e;
+  cursor: pointer;
+}
 
-    .piece {
-      width: 100px;
-      height: 100px;
-      background-image: url("20251213_203723.jpg");
-      background-size: 300px 300px;
-      border: 1px solid #c8aa6e;
-    }
-
-    img {
-      max-width: 90%;
-      border: 3px solid #c8aa6e;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-
-    a.download {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: 2px solid #c8aa6e;
-      color: #c8aa6e;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-
-    a.download:hover {
-      background: #c8aa6e;
-      color: #0a1428;
-    }
-  </style>
+#final {
+  display: none;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- TELA 1 -->
-  <div class="tela" id="tela1">
-    <h1>CONTINUAR PARTIDA?</h1>
-    <p><strong>renatanunes27</strong> 💙 <strong>anickpio</strong></p>
-    <p>Início: 25/06</p>
-    <button onclick="iniciar()">Continuar</button>
-  </div>
+<div class="tela" id="tela1">
+  <h1>CONTINUAR PARTIDA?</h1>
+  <p><strong>renatanunes27</strong> 💙 <strong>anickpio</strong></p>
+  <button onclick="iniciar()">Continuar</button>
+</div>
 
-  <!-- TELA 2 -->
-  <div class="tela" id="tela2" style="display:none;">
-    <h1>Missão bônus</h1>
-    <p>Clique em todas as peças</p>
-    <div id="puzzle"></div>
-    <button onclick="finalizar()">Confirmar</button>
-  </div>
+<div class="tela" id="tela2" style="display:none;">
+  <h1>Monte a imagem</h1>
+  <div id="puzzle"></div>
+  <button onclick="verificar()">Confirmar</button>
+</div>
 
-  <!-- TELA FINAL -->
-  <div class="tela" id="tela3" style="display:none;">
-    <h1>✨ Vitória ✨</h1>
-    <p>Você é o amor dessa<br>e de todas as minhas outras vidas.</p>
+<div class="tela" id="final">
+  <h1>✨ Vitória ✨</h1>
+  <p>Você é o amor dessa<br>e de todas as minhas outras vidas</p>
+  <img src="20251213_203723.jpg" style="width:300px;border:3px solid #c8aa6e;border-radius:10px;">
+</div>
 
-    <img src="20251213_203723.jpg">
+<script>
+const puzzle = document.getElementById("puzzle");
+let ordemCorreta = [];
+let ordemAtual = [];
+let selecionada = null;
 
-    <a class="download" href="20251213_203723.jpg" download>
-      Baixar nossa foto 💙
-    </a>
-  </div>
+function iniciar() {
+  document.getElementById("tela1").style.display = "none";
+  document.getElementById("tela2").style.display = "block";
 
-  <script>
-    const puzzle = document.getElementById("puzzle");
+  puzzle.innerHTML = "";
+  ordemCorreta = [];
+  ordemAtual = [];
 
-    function iniciar() {
-      document.getElementById("tela1").style.display = "none";
-      document.getElementById("tela2").style.display = "flex";
+  for (let i = 0; i < 9; i++) ordemCorreta.push(i);
 
-      puzzle.innerHTML = "";
+  ordemAtual = [...ordemCorreta].sort(() => Math.random() - 0.5);
 
-      for (let i = 0; i < 9; i++) {
-        const piece = document.createElement("div");
-        piece.className = "piece";
+  ordemAtual.forEach((pos, index) => {
+    const piece = document.createElement("div");
+    piece.className = "piece";
 
-        const x = (i % 3) * -100;
-        const y = Math.floor(i / 3) * -100;
-        piece.style.backgroundPosition = `${x}px ${y}px`;
+    const x = (pos % 3) * -100;
+    const y = Math.floor(pos / 3) * -100;
+    piece.style.backgroundPosition = `${x}px ${y}px`;
 
-        piece.onclick = () => {
-          piece.style.opacity = "1";
-        };
+    piece.onclick = () => trocar(index);
+    puzzle.appendChild(piece);
+  });
+}
 
-        puzzle.appendChild(piece);
-      }
-    }
+function trocar(index) {
+  if (selecionada === null) {
+    selecionada = index;
+    puzzle.children[index].style.opacity = "0.6";
+  } else {
+    const temp = ordemAtual[selecionada];
+    ordemAtual[selecionada] = ordemAtual[index];
+    ordemAtual[index] = temp;
 
-    function finalizar() {
-      document.getElementById("tela2").style.display = "none";
-      document.getElementById("tela3").style.display = "flex";
-    }
-  </script>
+    atualizarPuzzle();
+    selecionada = null;
+  }
+}
+
+function atualizarPuzzle() {
+  Array.from(puzzle.children).forEach((piece, i) => {
+    const pos = ordemAtual[i];
+    const x = (pos % 3) * -100;
+    const y = Math.floor(pos / 3) * -100;
+    piece.style.backgroundPosition = `${x}px ${y}px`;
+    piece.style.opacity = "1";
+  });
+}
+
+function verificar() {
+  if (ordemAtual.join() === ordemCorreta.join()) {
+    document.getElementById("tela2").style.display = "none";
+    document.getElementById("final").style.display = "block";
+  } else {
+    alert("Ainda não está certo 👀 continua!");
+  }
+}
+</script>
 
 </body>
 </html>
