@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Continuar Partida</title>
+<title>Chat Especial</title>
 
 <style>
 body {
@@ -16,130 +16,82 @@ body {
   height: 100vh;
 }
 
-.tela {
-  text-align: center;
-}
-
-h1 {
-  letter-spacing: 2px;
-}
-
-button {
-  margin-top: 20px;
-  padding: 12px 28px;
-  font-size: 1em;
-  background: linear-gradient(180deg, #1e2328, #0a1428);
+.chat {
+  width: 90%;
+  max-width: 400px;
+  background: #0a1428;
   border: 2px solid #c8aa6e;
-  color: #c8aa6e;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.messages {
+  height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.user {
+  text-align: right;
+  margin: 8px 0;
+  color: #7fd1ff;
+}
+
+.bot {
+  text-align: left;
+  margin: 8px 0;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
   border-radius: 6px;
-  cursor: pointer;
-}
-
-#puzzle {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  gap: 4px;
-  margin-top: 20px;
-}
-
-.piece {
-  width: 100px;
-  height: 100px;
-  background-image: url("20251213_203723.jpg");
-  background-size: 300px 300px;
-  border: 1px solid #c8aa6e;
-  cursor: pointer;
-}
-
-#final {
-  display: none;
+  border: none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="tela" id="tela1">
-  <h1>CONTINUAR PARTIDA?</h1>
-  <p><strong>renatanunes27</strong> 💙 <strong>anickpio</strong></p>
-  <button onclick="iniciar()">Continuar</button>
-</div>
-
-<div class="tela" id="tela2" style="display:none;">
-  <h1>Monte a imagem</h1>
-  <div id="puzzle"></div>
-  <button onclick="verificar()">Confirmar</button>
-</div>
-
-<div class="tela" id="final">
-  <h1>✨ Vitória ✨</h1>
-  <p>Você é o amor dessa<br>e de todas as minhas outras vidas</p>
-  <img src="20251213_203723.jpg" style="width:300px;border:3px solid #c8aa6e;border-radius:10px;">
+<div class="chat">
+  <div class="messages" id="messages">
+    <div class="bot">
+      Oi, renatanunes27 💙<br>
+      Pode perguntar qualquer coisa.
+    </div>
+  </div>
+  <input id="input" placeholder="Digite aqui e aperte Enter">
 </div>
 
 <script>
-const puzzle = document.getElementById("puzzle");
-let ordemCorreta = [];
-let ordemAtual = [];
-let selecionada = null;
+const respostas = [
+  "Essa resposta vem com bônus: você é o amor dessa e de todas as minhas outras vidas.",
+  "Segundo o patch mais recente da vida, a resposta envolve você.",
+  "Se isso fosse uma fila ranqueada, eu escolheria jogar ao seu lado.",
+  "Resposta técnica: sim. Resposta sincera: você.",
+  "Pergunta difícil… mas fica mais fácil quando você está por perto.",
+  "Mesmo quando não sei tudo, sei que você é especial.",
+  "Você de fato é minha pessoa favorita do mundo.",
+  "Quero passar todos os dias da minha vida com você."
+];
 
-function iniciar() {
-  document.getElementById("tela1").style.display = "none";
-  document.getElementById("tela2").style.display = "block";
+const messages = document.getElementById("messages");
+const input = document.getElementById("input");
 
-  puzzle.innerHTML = "";
-  ordemCorreta = [];
-  ordemAtual = [];
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter" && input.value.trim() !== "") {
+    const pergunta = input.value;
+    input.value = "";
 
-  for (let i = 0; i < 9; i++) ordemCorreta.push(i);
+    messages.innerHTML += `<div class="user">${pergunta}</div>`;
 
-  ordemAtual = [...ordemCorreta].sort(() => Math.random() - 0.5);
-
-  ordemAtual.forEach((pos, index) => {
-    const piece = document.createElement("div");
-    piece.className = "piece";
-
-    const x = (pos % 3) * -100;
-    const y = Math.floor(pos / 3) * -100;
-    piece.style.backgroundPosition = `${x}px ${y}px`;
-
-    piece.onclick = () => trocar(index);
-    puzzle.appendChild(piece);
-  });
-}
-
-function trocar(index) {
-  if (selecionada === null) {
-    selecionada = index;
-    puzzle.children[index].style.opacity = "0.6";
-  } else {
-    const temp = ordemAtual[selecionada];
-    ordemAtual[selecionada] = ordemAtual[index];
-    ordemAtual[index] = temp;
-
-    atualizarPuzzle();
-    selecionada = null;
+    setTimeout(() => {
+      const resposta = respostas[Math.floor(Math.random() * respostas.length)];
+      messages.innerHTML += `<div class="bot">${resposta}</div>`;
+      messages.scrollTop = messages.scrollHeight;
+    }, 600);
   }
-}
-
-function atualizarPuzzle() {
-  Array.from(puzzle.children).forEach((piece, i) => {
-    const pos = ordemAtual[i];
-    const x = (pos % 3) * -100;
-    const y = Math.floor(pos / 3) * -100;
-    piece.style.backgroundPosition = `${x}px ${y}px`;
-    piece.style.opacity = "1";
-  });
-}
-
-function verificar() {
-  if (ordemAtual.join() === ordemCorreta.join()) {
-    document.getElementById("tela2").style.display = "none";
-    document.getElementById("final").style.display = "block";
-  } else {
-    alert("Ainda não está certo 👀 continua!");
-  }
-}
+});
 </script>
 
 </body>
